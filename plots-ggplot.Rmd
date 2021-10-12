@@ -8,3 +8,74 @@ output: html_document
 # Plots with ggplot2
 
 We are going to make some plots in R.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+```
+```{r}
+ca_np <- read_csv(here("data", "ca_np.csv"))
+names(ca_np)
+head(ca_np)
+summary(ca_np)
+
+ci_np <- read_excel(here("data", "ci_np.xlsx"))
+```
+
+#Making the first ggplot graph
+Visualizing visitors to Channel Islands National Park
+
+```{r}
+gg_base <- ggplot(data = ci_np,
+      aes(x = year, y = visitors))
+
+gg_base +
+  geom_line()
+
+gg_base +
+  geom_point()
+
+gg_base +
+  geom_col()
+
+gg_base +
+  geom_area()
+```
+
+We can also start customizing `ggplot` graphs
+
+```{r}
+gg_base +
+  geom_line(
+    color = "purple",
+    linetype = "dashed"
+  )
+
+gg_base +
+  geom_point(
+    color = "purple",
+    pch = 17,
+    size = 4,
+    alpha = 0.5
+  )
+
+gg_base +
+  geom_area(
+    color = "green",
+    fill = "green",
+    alpha = 0.5
+  )
+
+## mapping variables onto aesthetics
+gg_base +
+  geom_point(
+    aes(size = visitors,
+        color = visitors),
+    alpha = 0.5
+  )
+
+gg_base +
+  geom_col(aes(fill = visitors))
+```
+
