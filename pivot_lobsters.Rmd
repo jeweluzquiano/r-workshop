@@ -90,6 +90,36 @@ But we can redo all analyses with new data:
 ## read in new data
 lobsters <- read_xlsx(here("data/lobsters2.xlsx"), skip=4)
 
+```
 
+Using `count()`
+```{r}
+lobsters %>%
+  count(site, year)
+
+## This is the same as:
+lobsters %>%
+  group_by(site, year) %>% 
+  summarize(n = n()) %>%
+  ungroup()
+```
+
+```{r}
+#use mutate() to add columns to dataframes
+
+lobsters %>% 
+  mutate(size_m = size_mm / 1000)
+
+lobsters_detailed <- 
+  lobsters %>% 
+  mutate(size_m = size_mm / 1000, 
+         millenia = 2000,
+         observer = "Jewel Uzquiano")
+```
+
+```{r}
+## use select() to choose columns to include
+lobsters_detailed %>% 
+  select(date, site, size_m)
 ```
 
