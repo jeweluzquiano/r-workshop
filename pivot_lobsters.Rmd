@@ -1,0 +1,24 @@
+---
+title: "pivot_lobsters"
+author: "Jewel Uzquiano"
+date: "10/11/2021"
+output: html_document
+---
+
+```{r echo=FALSE}
+## attach libraries
+library(tidyverse)
+library(readxl)
+library(here)
+library(skimr) #install.packages("skimr")
+library(kableExtra) # install.packages("kableExtra")
+```
+
+```{r}
+## read in data
+lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip = 4)
+
+## explore data
+skimr::skim(lobsters)
+```
+
