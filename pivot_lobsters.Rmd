@@ -22,3 +22,64 @@ lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip = 4)
 skimr::skim(lobsters)
 ```
 
+Let's make a pivot table of the lobsters data
+
+```{r}
+lobsters %>% 
+  group_by(year) %>% 
+  summarize(count_by_year = n())
+
+lobsters %>% 
+  summarize(count = n())
+
+lobsters %>% 
+  group_by(year)
+
+lobsters %>% 
+  group_by(site, year) %>% 
+  summarize(count_by_siteyear = n())
+
+## or
+
+siteyear_summary <- lobsters %>% 
+  group_by(site, year) %>% 
+  summarize(count_by_siteyear = n(),
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm = TRUE))
+
+## inspect the new variable
+siteyear_summary
+
+
+## make a table with new variable
+siteyear_summary %>% 
+  kable()
+```
+
+
+There are `r nrow(lobsters)` total lobsters included in this report.
+
+
+```{r}
+## Activity
+siteyear_sum_med <- lobsters %>% 
+  group_by(site, year) %>% 
+  summarize(count_by_siteyear = n(),
+            med_size_mm = median(size_mm, na.rm = TRUE),
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm = TRUE))
+gg_base <- ggplot(data = siteyear_sum_med,
+      aes(x = year, y = mean_size_mm, fill = site))
+  
+l <- gg_base +
+  geom_col() +
+  theme_light() +
+  labs(
+    x = "site",
+    y = "mean lobster size") +
+  facet_wrap(~site)
+l
+
+ggsave(here("figures", "lobsters_col.jpg"), dpi = 180, width = 8, height = 7)
+```
+
