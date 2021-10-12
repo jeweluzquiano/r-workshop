@@ -16,8 +16,9 @@ library(kableExtra) # install.packages("kableExtra")
 
 ```{r}
 ## read in data
-lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip = 4)
-
+#lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip = 4)
+## read in new data then re-knit
+lobsters <- read_xlsx(here("data/lobsters2.xlsx"), skip=4)
 ## explore data
 skimr::skim(lobsters)
 ```
@@ -81,5 +82,14 @@ l <- gg_base +
 l
 
 ggsave(here("figures", "lobsters_col.jpg"), dpi = 180, width = 8, height = 7)
+```
+
+But we can redo all analyses with new data:
+
+```{r}
+## read in new data
+lobsters <- read_xlsx(here("data/lobsters2.xlsx"), skip=4)
+
+
 ```
 
