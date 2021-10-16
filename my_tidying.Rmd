@@ -1,0 +1,78 @@
+---
+title: "My Tidying"
+author: "Jewel Uzquiano"
+date: "10/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Attach packages
+library(tidyverse)
+library(janitor)
+library(here)
+library(readxl)
+```
+
+```{r}
+inverts <- read_excel(here("data/inverts.xlsx"))
+View(inverts)
+names(inverts)
+summary(inverts)
+```
+We can use the `tidyr` package and the `pivot_longer()` function to make the data into a longer format as opposed to a wide format.
+
+```{r}
+# Note: Either single-quotes, double-quotes, OR backticks around years work!
+
+inverts_long <- pivot_longer(data = inverts, 
+                                    cols = '2016':'2018',
+                                    names_to = "year",
+                                    values_to = "sp_count")
+
+inverts_long
+
+class(inverts_long$year)
+
+# it's character, but needs to be numeric!
+
+# Coerce "year" class to numeric and overwrite data frame and existing year column
+
+inverts_long <- inverts_long %>% 
+  mutate(year = as.numeric(year))
+
+class(inverts_long$year)
+```
+
+We can also use `tidyr::pivot_wider` to do the opposite.
+
+```{r}
+inverts_wide <- inverts_long %>% 
+  pivot_wider(names_from = common_name,
+              values_from = sp_count)
+```
+
+Clean up the names with the `janitor::clean_names()` function!
+
+```{r}
+inverts_wide <- inverts_wide %>% 
+  clean_names()
+names(inverts_wide)
+```
+
+We can also use unite and separate functions
+
+```{r}
+## unite columns in inverts_long
+inverts_unite <- inverts_long %>% 
+  unite(col = "site_year", # this is the name of the new column
+        c(site, year), # the columns we will unite
+        sep = "_") # this specifies the delimiter
+
+## Activity
+
+```
+
