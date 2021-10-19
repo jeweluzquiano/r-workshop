@@ -73,6 +73,38 @@ inverts_unite <- inverts_long %>%
         sep = "_") # this specifies the delimiter
 
 ## Activity
+inverts_moyr <- inverts_long %>% 
+  unite(col = "mo_yr",
+        c(month, year),
+        sep = "/")
 
+# inverts_moyr <- inverts_long %>% 
+#   unite(col = "mo_yr_silly",
+#         c(month, year),
+#         sep = "hello!")
+
+## Uniting more than 2 columns using tidy::unite()
+inverts_triple_unite <- inverts_long %>% 
+  tidyr::unite(col = "year_site_name",
+               c(year, site, common_name),
+               sep = "-")
+head(inverts_triple_unite)
+```
+```{r}
+## Or separate columns with tidy::separate
+inverts_sep <- inverts_unite %>% 
+  tidyr::separate(site_year, into = c("my_site", "my_year"))
+```
+
+Find and replace strings , similar to Excel but in R:
+*use with caution.
+```{r}
+ca_abbr <- inverts %>% 
+  mutate(
+    common_name = 
+      str_replace(common_name,
+                  pattern = "california",
+                  replacement = "CA")
+  )
 ```
 

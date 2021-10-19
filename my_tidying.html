@@ -266,7 +266,43 @@ inverts_unite &lt;- inverts_long %&gt;%
         c(site, year), # the columns we will unite
         sep = &quot;_&quot;) # this specifies the delimiter
 
-## Activity</code></pre>
+## Activity
+inverts_moyr &lt;- inverts_long %&gt;% 
+  unite(col = &quot;mo_yr&quot;,
+        c(month, year),
+        sep = &quot;/&quot;)
+
+# inverts_moyr &lt;- inverts_long %&gt;% 
+#   unite(col = &quot;mo_yr_silly&quot;,
+#         c(month, year),
+#         sep = &quot;hello!&quot;)
+
+## Uniting more than 2 columns using tidy::unite()
+inverts_triple_unite &lt;- inverts_long %&gt;% 
+  tidyr::unite(col = &quot;year_site_name&quot;,
+               c(year, site, common_name),
+               sep = &quot;-&quot;)
+head(inverts_triple_unite)</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   month year_site_name                     sp_count
+##   &lt;chr&gt; &lt;chr&gt;                                 &lt;dbl&gt;
+## 1 7     2016-abur-california cone snail         451
+## 2 7     2017-abur-california cone snail          28
+## 3 7     2018-abur-california cone snail         762
+## 4 7     2016-abur-california spiny lobster       17
+## 5 7     2017-abur-california spiny lobster       17
+## 6 7     2018-abur-california spiny lobster       16</code></pre>
+<pre class="r"><code>## Or separate columns with tidy::separate
+inverts_sep &lt;- inverts_unite %&gt;% 
+  tidyr::separate(site_year, into = c(&quot;my_site&quot;, &quot;my_year&quot;))</code></pre>
+<p>Find and replace strings , similar to Excel but in R: *use with caution.</p>
+<pre class="r"><code>ca_abbr &lt;- inverts %&gt;% 
+  mutate(
+    common_name = 
+      str_replace(common_name,
+                  pattern = &quot;california&quot;,
+                  replacement = &quot;CA&quot;)
+  )</code></pre>
 
 
 
