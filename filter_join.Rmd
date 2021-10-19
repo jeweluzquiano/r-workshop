@@ -1,0 +1,95 @@
+---
+title: "filter join"
+author: "Jewel Uzquiano"
+date: "10/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+## attach packages
+library(tidyverse)
+library(readxl)
+library(here)
+library(kableExtra)
+```
+
+```{r}
+## read in data
+fish <- read_csv(here("data", "fish.csv"))
+kelp_abur <- read_excel(here("data/kelp.xlsx"))
+
+View(fish)
+View(kelp_abur)
+```
+
+Let's subset some observations using `dplyr::filter()`
+
+```{r}
+fish_garibaldi <- fish %>% 
+  filter(common_name == "garibaldi")
+
+fish_mohk <- fish %>% 
+  filter(site == "mohk")
+
+fish_over50 <- fish %>% 
+  filter(total_count >= 50)
+
+## filter rows with this OR that
+
+fish_3sp <- fish %>% 
+  filter(common_name == "garibaldi" |
+           common_name == "blacksmith" |
+           common_name == "black surfperch")
+
+```
+
+If you're looking for multiple matches in one variable, use the %in% operator, which looks for any matches within a vector.
+
+```{r}
+fish_3sp <- fish %>% 
+  filter(common_name %in% c("garibaldi", "blacksmith", "black surfperch"))
+
+## Activity:
+
+fish_gar_2016 <- fish %>% 
+  filter(year == 2016 |
+           common_name == "garibaldi")
+```
+
+Filter to find observations that match this AND that.
+
+```{r}
+aque_2018 <- fish %>% 
+  filter(year == 2018, site == "aque")
+
+## or
+
+aque_2018 <- fish %>% 
+  filter(year == 2018 & site == "aque")
+
+## or
+aque_2018 <- fish %>% 
+  filter(year == 2018) %>% 
+  filter(site == "aque")
+
+## create a subset from fish dataset with only observations for garibaldi or rock wrasse AND the total_count is less than or equal to 10
+
+low_gb_wr <- fish %>% 
+  filter(common_name %in% c("garibaldi", "rock wrasse"),
+         total_count <= 10)
+```
+
+Detect string patterns with `stringr::str_detect()`
+
+```{r}
+fish_bl <- fish %>% 
+  filter(str_detect(common_name, pattern = "black"))
+
+fish_it <- fish %>% 
+  filter(str_detect(common_name, pattern = "it"))
+```
+
