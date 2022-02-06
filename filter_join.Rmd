@@ -54,7 +54,7 @@ fish_3sp <- fish %>%
   filter(common_name %in% c("garibaldi", "blacksmith", "black surfperch"))
 
 ## Activity:
-
+## allows for OR selection
 fish_gar_2016 <- fish %>% 
   filter(year == 2016 |
            common_name == "garibaldi")
@@ -91,5 +91,15 @@ fish_bl <- fish %>%
 
 fish_it <- fish %>% 
   filter(str_detect(common_name, pattern = "it"))
+```
+
+
+```{r}
+## lets do some joins!
+
+abur_kelp_fish <- kelp_abur %>% 
+  full_join(fish, by = c("year", "site"))
+
+View(abur_kelp_fish)
 ```
 
